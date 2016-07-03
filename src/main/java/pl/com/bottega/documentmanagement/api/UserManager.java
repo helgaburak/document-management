@@ -16,10 +16,10 @@ public class UserManager {
 
     private EmployeeRepository employeeRepository;
     private Employee currentEmployee;
+
     public UserManager(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-
 
     @Transactional
     public SignupResultDto signup(String login, String password, EmployeeId employeeId) {
@@ -58,15 +58,14 @@ public class UserManager {
     }
 
     public SignupResultDto login(String login, String password) {
-        Employee employee = employeeRepository.findByLoginAndPassword(login, hashedPassword(password));
-        if(employee == null)
+        this.currentEmployee = employeeRepository.findByLoginAndPassword(login, hashedPassword(password));
+        if(this.currentEmployee == null)
             return failed("login or password incorrect");
         else
             return success();
     }
 
     public Employee currentEmployee() {
-
         return this.currentEmployee;
     }
 

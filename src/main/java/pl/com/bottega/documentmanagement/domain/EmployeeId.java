@@ -2,6 +2,7 @@ package pl.com.bottega.documentmanagement.domain;
 
 import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -10,11 +11,11 @@ import java.io.Serializable;
 @Embeddable
 public class EmployeeId implements Serializable {
 
-
     @GeneratedValue
     private Long id;
 
-    private EmployeeId(){}
+    private EmployeeId() {}
+
     public EmployeeId(Long id) {
         this.id = id;
     }

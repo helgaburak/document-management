@@ -16,12 +16,12 @@ public class CreateDocument {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[]{"application.xml"});
         UserManager userManager = applicationContext.getBean("userManager", UserManager.class);
-        userManager.signup("ziutek", "rampampam", new EmployeeId(668L));
-        userManager.login("mietek", "123456");
-        SignupResultDto result = userManager.login("mietek", "123456");
+        userManager.signup("janek", "qwerty", new EmployeeId(50L));
+        SignupResultDto result = userManager.login("mietek", "23456");
         System.out.println(result);
         DocumentFlowProcess documentFlowProcess = applicationContext.getBean("documentFlowProcess", DocumentFlowProcess.class);
         DocumentNumber number = documentFlowProcess.create("my first doc", "trala la");
+        documentFlowProcess.change(number, "changed title", "changed content");
         System.out.println(number);
     }
 
