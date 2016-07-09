@@ -41,17 +41,17 @@
     </bean>
     <aop:config>
         <aop:aspect id="authAspect" ref="authAspect">
-            <aop:pointcut id="authPointcut" expression="@annotation(pl.com.bottega.documentmanagement.api.RequiredAuth)" />
-            <aop:before pointcut-ref="authPointcut" method="checkAuth" />
-    </aop:aspect>
-    </aop:config>
-
-    <aop:config>
-        <aop:aspect ref="misio">
-            <aop:pointcut id="authPointcut" expression="@annotation(pl.com.bottega.documentmanagement.api.RequiresAuth)" />
-
-            <aop:before pointcut-ref="authPointcut" method="checkAuth" />
+            <aop:pointcut id="authMethod" expression="@annotation(pl.com.bottega.documentmanagement.api.RequiresAuth)" />
+            <aop:before pointcut-ref="authMethod" method="checkAuth" />
         </aop:aspect>
+
+        <aop:aspect id="profilingAspect" ref="profilingAspect">
+            <aop:pointcut id="allApiMethods" expression="execution(* pl.com.bottega.documentmanagement.api.*.*(..))" />
+            <aop:around pointcut-ref="allApiMethods" method="profile" />
+        </aop:aspect>
+
     </aop:config>
+
+
 
 </beans>

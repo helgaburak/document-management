@@ -28,6 +28,7 @@ public class DocumentFlowProcess {
 
     @Transactional
     @RequiresAuth
+
     public DocumentNumber create(String title, String content) {
         checkNotNull(title);
         checkNotNull(content);
