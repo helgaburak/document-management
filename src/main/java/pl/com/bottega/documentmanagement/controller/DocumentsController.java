@@ -15,6 +15,7 @@ public class DocumentsController {
 
     private DocumentFlowProcess documentFlowProcess;
     private DocumentsCatalog documentsCatalog;
+
     public DocumentsController(DocumentFlowProcess documentFlowProcess, DocumentsCatalog documentsCatalog) {
         this.documentFlowProcess = documentFlowProcess;
         this.documentsCatalog = documentsCatalog;
@@ -34,5 +35,10 @@ public class DocumentsController {
         return documentsCatalog.get(new DocumentNumber(documentNumber))  ;
     }
 
+
+    @GetMapping("/{documentNumber}")
+    public DocumentDto show(@PathVariable String documentNumber) {
+        return documentsCatalog.get(new DocumentNumber(documentNumber));
+    }
 
 }

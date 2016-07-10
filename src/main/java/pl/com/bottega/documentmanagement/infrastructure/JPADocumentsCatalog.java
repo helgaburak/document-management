@@ -1,12 +1,13 @@
 package pl.com.bottega.documentmanagement.infrastructure;
 
+import org.springframework.stereotype.Component;
 import pl.com.bottega.documentmanagement.api.DocumentCriteria;
+import pl.com.bottega.documentmanagement.api.DocumentDto;
 import pl.com.bottega.documentmanagement.api.DocumentsCatalog;
 import pl.com.bottega.documentmanagement.domain.Document;
 import pl.com.bottega.documentmanagement.domain.DocumentNumber;
 import pl.com.bottega.documentmanagement.domain.DocumentNumber_;
 import pl.com.bottega.documentmanagement.domain.Document_;
-import pl.com.bottega.documentmanagement.api.DocumentDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,13 +20,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by maciuch on 12.06.16.
  */
+@Component
 public class JPADocumentsCatalog implements DocumentsCatalog {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public pl.com.bottega.documentmanagement.api.DocumentDto get(DocumentNumber documentNumber) {
+    public DocumentDto get(DocumentNumber documentNumber) {
         checkNotNull(documentNumber);
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DocumentDto> query = builder.createQuery(DocumentDto.class);
@@ -41,11 +43,10 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
                 root.get(Document_.updatedAt)
         ));
         return entityManager.createQuery(query).getSingleResult();
-
     }
 
     @Override
-    public Iterable<pl.com.bottega.documentmanagement.api.DocumentDto> find(DocumentCriteria documentCriteria) {
+    public Iterable<DocumentDto> find(DocumentCriteria documentCriteria) {
         checkNotNull(documentCriteria);
 
         return null;

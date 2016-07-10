@@ -19,6 +19,9 @@ public class Document {
 
     private String title;
 
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date createdAt, verifiedAt, updatedAt;
+
     @Enumerated(EnumType.STRING)
     private DocumentStatus status;
 
@@ -42,8 +45,6 @@ public class Document {
         this.creator = creator;
         this.status = DocumentStatus.DRAFT;
         this.createdAt = new Date();
-        //this.updatedAt = updatedAt;
-        //this.verifiedAt = verifiedAt;
     }
 
     public void change(String title, String content) {
@@ -51,8 +52,6 @@ public class Document {
         this.content = content;
         this.status = DocumentStatus.DRAFT;
         this.updatedAt = new Date();
-
-
     }
 
     public void verify(Employee employee) {

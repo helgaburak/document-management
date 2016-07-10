@@ -11,7 +11,7 @@ public class DocumentDto {
     private String title;
     private String content;
     private String status;
-    private Long creatorId, verificaotId;
+    private Long creatorId, verificatorId;
     private Date createdAt, verificatedAt, updatedAt;
 
     public DocumentDto(String number, String title, String content, String status, Date createdAt, Date verificatedAt, Date updatedAt) {

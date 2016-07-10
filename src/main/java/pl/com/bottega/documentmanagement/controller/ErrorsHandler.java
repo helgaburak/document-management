@@ -10,21 +10,25 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.com.bottega.documentmanagement.api.AuthRequiredException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
- * Created by Piotr on 09.07.2016.
+ * Created by maciuch on 09.07.16.
  */
 @ControllerAdvice
 public class ErrorsHandler {
+
     @ExceptionHandler(AuthRequiredException.class)
-    public ResponseEntity handleAuthRequiredException(){
-        MultiValueMap<String, String> m = new LinkedMultiValueMap<>();
-        m.put("Content-Type", Lists.asList("application/json", new String[]{}));
+    public ResponseEntity<String> handleAuthRequiredException() {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, "application/json");
         return new ResponseEntity<String>(
-                "{'error': authentication required'}",
+                "{'error': 'authentication_required'}",
                 headers,
                 HttpStatus.UNAUTHORIZED
-        ) ;
+        );
     }
+
 }
