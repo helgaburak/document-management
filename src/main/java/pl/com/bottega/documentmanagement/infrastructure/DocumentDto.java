@@ -1,8 +1,11 @@
+/*
 package pl.com.bottega.documentmanagement.infrastructure;
 
+*/
 /**
  * Created by Piotr on 12.06.2016.
- */
+ *//*
+
 public class DocumentDto {
 
     private String number;
@@ -44,3 +47,4 @@ public class DocumentDto {
 
 
 }
+*/

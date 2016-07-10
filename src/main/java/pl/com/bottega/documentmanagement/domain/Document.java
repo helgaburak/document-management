@@ -1,15 +1,14 @@
 package pl.com.bottega.documentmanagement.domain;
 
-import pl.com.bottega.documentmanagement.api.DocumentDto;
-
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by maciuch on 12.06.16.
  */
 @Entity
 public class Document {
-
+    // data stworzenia, data ost modyfikacji, data veryfikacji
     @Id
     @GeneratedValue
     private Long id;
@@ -29,6 +28,10 @@ public class Document {
     @ManyToOne
     private Employee verificator;
 
+    private Date createdAt;
+    private Date updatedAt;
+    private Date verifiedAt;
+
     private Document() {
     }
 
@@ -38,17 +41,24 @@ public class Document {
         this.title = title;
         this.creator = creator;
         this.status = DocumentStatus.DRAFT;
+        this.createdAt = new Date();
+        //this.updatedAt = updatedAt;
+        //this.verifiedAt = verifiedAt;
     }
 
     public void change(String title, String content) {
         this.title = title;
         this.content = content;
         this.status = DocumentStatus.DRAFT;
+        this.updatedAt = new Date();
+
+
     }
 
     public void verify(Employee employee) {
         this.verificator = employee;
         this.status = DocumentStatus.VERIFIED;
+        this.verifiedAt = new Date();
     }
 
     public void confirm(Employee conirmator) {
