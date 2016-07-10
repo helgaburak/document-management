@@ -36,9 +36,6 @@ public class DocumentsController {
     }
 
 
-    @GetMapping("/{documentNumber}")
-    public DocumentDto show(@PathVariable String documentNumber) {
-        return documentsCatalog.get(new DocumentNumber(documentNumber));
-    }
+
 
 }

@@ -31,9 +31,7 @@ public class Document {
     @ManyToOne
     private Employee verificator;
 
-    private Date createdAt;
-    private Date updatedAt;
-    private Date verifiedAt;
+
 
     private Document() {
     }
