@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="pl.com.bottega.documentmanagement"/>
+    <tx:annotation-driven/>
+
+    <context:property-placeholder location="classpath:application.properties,classpath:jdbc.properties"/>
+
+    <bean id="documentNumberGenerator" class="${documentNumberGeneratorClass}">
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxTotal" value="5"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="loadTimeWeaver">
+            <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+        </property>
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+        </property>
+    </bean>
+    <!--<bean class="org.springframework.orm.jpa.vendor"-->
+
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    <aop:config>
+        <aop:aspect id="a1" ref="authAspect">
+            <aop:pointcut id="authMethod"
+                          expression="@annotation(pl.com.bottega.documentmanagement.api.RequiresAuth) and @annotation(requiresAuth)"/>
+
+            <aop:before arg-names="requiresAuth" pointcut-ref="authMethod" method="checkAuth"/>
+        </aop:aspect>
+
+        <!--aop:aspect id="a2" ref="authAspect">
+            <aop:pointcut id="authClass" expression="@target(pl.com.bottega.documentmanagement.api.RequiresAuth)" />
+
+            <aop:before pointcut-ref="authClass" method="checkAuth" />
+        </aop:aspect-->
+
+        <aop:aspect id="profilingAspect" ref="profilingAspect">
+            <aop:pointcut id="allApiMethods" expression="execution(* pl.com.bottega.documentmanagement.api.*.*(..))"/>
+
+            <aop:around pointcut-ref="allApiMethods" method="profile"/>
+        </aop:aspect>
+
+    </aop:config>
+
+
+
+</beans>
