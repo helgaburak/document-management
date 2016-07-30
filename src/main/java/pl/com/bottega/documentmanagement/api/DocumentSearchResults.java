@@ -13,7 +13,7 @@ public class DocumentSearchResults {
         this.documents = documents;
         this.perPage = perPage;
         this.pageNumber = pageNumber;
-        this.totalPages = totalResults / perPage + (totalResults % perPage > 0 ? 1 : 0 );
+        this.totalPages = totalResults / perPage + (totalResults % perPage > 0 ? 1 : 0);
     }
 
     public Iterable<DocumentDto> getDocuments() {
