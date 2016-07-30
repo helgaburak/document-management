@@ -19,6 +19,8 @@ public class Document {
 
     private String title;
 
+    private boolean deleted;
+
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createdAt, verifiedAt, updatedAt;
 
@@ -31,7 +33,8 @@ public class Document {
     @ManyToOne
     private Employee verificator;
 
-
+    @ManyToOne
+    private Employee deletor;
 
     private Document() {
     }
@@ -43,6 +46,7 @@ public class Document {
         this.creator = creator;
         this.status = DocumentStatus.DRAFT;
         this.createdAt = new Date();
+        this.deleted = false;
     }
 
     public void change(String title, String content) {
@@ -64,6 +68,11 @@ public class Document {
 
     public void confirm(Employee confirmator, Employee forEmployee) {
 
+    }
+
+    public void delete(Employee deletor) {
+        this.deletor = deletor;
+        this.deleted = true;
     }
 
 }
