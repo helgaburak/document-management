@@ -1,19 +1,19 @@
 package pl.com.bottega.documentmanagement.infrastructure;
 
+//import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 import pl.com.bottega.documentmanagement.api.DocumentCriteria;
 import pl.com.bottega.documentmanagement.api.DocumentDto;
 import pl.com.bottega.documentmanagement.api.DocumentsCatalog;
 import pl.com.bottega.documentmanagement.api.RequiresAuth;
 import pl.com.bottega.documentmanagement.domain.*;
-
+import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -69,7 +69,7 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
     }
 
     @Override
-    @RequiresAuth(roles = "STAFF")
+    //@RequiresAuth(roles = "STAFF")
     public Iterable<DocumentDto> find(DocumentCriteria documentCriteria) {
         checkNotNull(documentCriteria);
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -77,7 +77,15 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
         Root<Document> root = query.from(Document.class);
         selectDocumentDto(builder, query, root);
         applyCriteria(documentCriteria, builder, query, root);
-        return entityManager.createQuery(query).getResultList();
+
+        Query jpaQuery = entityManager.createQuery(query);
+
+        int first = (documentCriteria.getPageNumber() -1) * documentCriteria.getPerPage();
+        jpaQuery.setFirstResult(first);
+        jpaQuery.setMaxResults(documentCriteria.getPerPage());
+        return jpaQuery.getResultList();
+
+      //return entityManager.createQuery(query).getResultList();
     }
 
     private void applyCriteria(DocumentCriteria documentCriteria, CriteriaBuilder builder, CriteriaQuery<DocumentDto> query, Root<Document> root) {

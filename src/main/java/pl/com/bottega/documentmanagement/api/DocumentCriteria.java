@@ -9,14 +9,16 @@ import java.util.Date;
  */
 public class DocumentCriteria {
 
+    private static final int DEFAULT_PAGE_NUMBER = 1;
+    private static final int DEFAULT_PER_PAGE = 2;
     private DocumentStatus status;
     private Long verifiedBy;
     private Long createdBy;
     private Date createdFrom, createdUntil;
     private Date verifiedFrom, verifiedUntil;
     private String query;
-    private int pageNumber;
-    private int perPage;
+    private int pageNumber = DEFAULT_PAGE_NUMBER;
+    private int perPage = DEFAULT_PER_PAGE;
 
 
     public int getPageNumber() {
