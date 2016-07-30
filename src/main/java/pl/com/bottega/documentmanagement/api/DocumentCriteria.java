@@ -15,6 +15,27 @@ public class DocumentCriteria {
     private Date createdFrom, createdUntil;
     private Date verifiedFrom, verifiedUntil;
     private String query;
+    private int pageNumber;
+    private int perPage;
+
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public int getPerPage() {
+        return perPage;
+    }
+
+    public void setPerPage(int perPage) {
+        this.perPage = perPage;
+    }
+
+
 
     public DocumentStatus getStatus() {
         return status;
