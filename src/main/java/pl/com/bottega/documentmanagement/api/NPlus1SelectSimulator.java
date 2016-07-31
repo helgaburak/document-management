@@ -47,8 +47,18 @@ public class NPlus1SelectSimulator {
         }
     }
 
+    @Transactional
+    public Document getDocument(){
+        Query query = entityManager.createQuery("FROM Document d JOIN FETCH d.tags");
+        query.setMaxResults(1);
+        return (Document) query.getResultList().get(0);
+    }
+
+
     private String randomString() {
         return UUID.randomUUID().toString();
     }
+
+
 
 }
