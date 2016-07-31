@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by maciuch on 12.06.16.
@@ -91,25 +90,28 @@ public class Document {
         return tags;
     }
 
-    public Employee getVerificator() {
+    public Employee verificator() {
         return verificator;
-    }
-
-    public DocumentNumber number() {
-        return documentNumber;
-    }
-    public Employee creator(){
-        return creator;
-    }
-    public boolean deleted(){
-        return deleted;
-    }
-    public String title(){
-        return title;
     }
 
     public String content() {
         return content;
+    }
+
+    public Employee creator() {
+        return creator;
+    }
+
+    public String title() {
+        return title;
+    }
+
+    public boolean deleted() {
+        return deleted;
+    }
+
+    public DocumentNumber number() {
+        return documentNumber;
     }
 
     public DocumentStatus status() {

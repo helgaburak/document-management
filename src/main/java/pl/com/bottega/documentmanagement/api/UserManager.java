@@ -24,14 +24,15 @@ import java.util.Set;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserManager {
 
-    private String INITIAL_ROLE = "STAFF";
-
     private EmployeeRepository employeeRepository;
     private Employee currentEmployee;
     private EmployeeFactory employeeFactory;
-    public UserManager(EmployeeRepository employeeRepository EmployeeFactory employeeFactory) {
+    private PasswordHasher passwordHasher;
+
+    public UserManager(EmployeeRepository employeeRepository, EmployeeFactory employeeFactory, PasswordHasher passwordHasher) {
         this.employeeRepository = employeeRepository;
         this.employeeFactory = employeeFactory;
+        this.passwordHasher = passwordHasher;
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -53,7 +54,6 @@ public class UserManager {
             return failed("login is occupied");
         else {
             Employee employee = employeeFactory.create(login, password, employeeId);
-            employee.updateRoles(getRoles(INITIAL_ROLE));
             employeeRepository.save(employee);
             return success();
         }
@@ -67,12 +67,8 @@ public class UserManager {
         return new SignupResultDto();
     }
 
-    private String hashedPassword(String password) {
-        return Hashing.sha1().hashString(password, Charsets.UTF_8).toString();
-    }
-
     public SignupResultDto login(String login, String password) {
-        this.currentEmployee = employeeRepository.findByLoginAndPassword(login, hashedPassword(password));
+        this.currentEmployee = employeeRepository.findByLoginAndPassword(login, passwordHasher.hashedPassword(password));
         if (this.currentEmployee == null)
             return failed("login or password incorrect");
         else
