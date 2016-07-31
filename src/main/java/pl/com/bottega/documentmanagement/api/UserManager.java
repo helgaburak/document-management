@@ -1,7 +1,6 @@
 package pl.com.bottega.documentmanagement.api;
 
 import com.google.common.base.Charsets;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.google.common.hash.Hashing;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +16,6 @@ import pl.com.bottega.documentmanagement.domain.repositories.EmployeeRepository;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by maciuch on 12.06.16.
@@ -30,9 +28,10 @@ public class UserManager {
 
     private EmployeeRepository employeeRepository;
     private Employee currentEmployee;
-
-    public UserManager(EmployeeRepository employeeRepository) {
+    private EmployeeFactory employeeFactory;
+    public UserManager(EmployeeRepository employeeRepository EmployeeFactory employeeFactory) {
         this.employeeRepository = employeeRepository;
+        this.employeeFactory = employeeFactory;
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -53,7 +52,7 @@ public class UserManager {
         if (employeeRepository.isLoginOccupied(login))
             return failed("login is occupied");
         else {
-            Employee employee = new Employee(login, hashedPassword(password), employeeId);
+            Employee employee = employeeFactory.create(login, password, employeeId);
             employee.updateRoles(getRoles(INITIAL_ROLE));
             employeeRepository.save(employee);
             return success();
